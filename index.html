@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boula Web Design — فيديو ترويجي</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --gold: #d4af37;
+  --gold2: #f0d060;
+  --blue: #00c6ff;
+  --blue2: #0072ff;
+  --purple: #7b2fff;
+  --bg: #07071a;
+  --bg2: #0d0d2b;
+}
+
+body {
+  background:#000;
+  font-family: 'Cairo', sans-serif;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── VIDEO STAGE ── */
+#stage {
+  width: 1280px;
+  height: 720px;
+  position: relative;
+  background: var(--bg);
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+/* ── SCENE BASE ── */
+.scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+  z-index: 1;
+}
+.scene.active { opacity: 1; pointer-events: all; }
+
+/* ── ANIMATED GRID BG ── */
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,198,255,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,198,255,.05) 1px, transparent 1px);
+  background-size: 64px 64px;
+  animation: gridDrift 25s linear infinite;
+}
+@keyframes gridDrift { to { transform: translate(64px,64px); } }
+
+/* ── RADIAL GLOWS ── */
+.glow-1 {
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,114,255,.18) 0%, transparent 70%);
+  top: -150px; right: -100px;
+  animation: glowPulse 5s ease-in-out infinite;
+}
+.glow-2 {
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(123,47,255,.15) 0%, transparent 70%);
+  bottom: -100px; left: -80px;
+  animation: glowPulse 6s ease-in-out infinite reverse;
+}
+.glow-3 {
+  position: absolute;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,175,55,.12) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  animation: glowPulse 4s ease-in-out infinite;
+}
+@keyframes glowPulse { 0%,100% { transform: translate(-50%,-50%) scale(1); } 50% { transform: translate(-50%,-50%) scale(1.15); } }
+
+/* ── PARTICLES ── */
+.particles-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.p {
+  position: absolute;
+  border-radius: 50%;
+  animation: particleRise linear infinite;
+  opacity: 0;
+}
+@keyframes particleRise {
+  0%   { transform: translateY(100%) scale(0); opacity: 0; }
+  10%  { opacity: .8; }
+  90%  { opacity: .4; }
+  100% { transform: translateY(-80px) scale(1.2); opacity: 0; }
+}
+
+/* ── PROGRESS BAR ── */
+#progress-bar {
+  position: absolute;
+  bottom: 0; left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--gold), var(--blue), var(--purple));
+  width: 0%;
+  transition: width 0.5s linear;
+  z-index: 100;
+}
+
+/* ── TIMER ── */
+#timer {
+  position: absolute;
+  top: 18px;
+  left: 28px;
+  font-size: .85rem;
+  color: rgba(255,255,255,.3);
+  z-index: 100;
+  letter-spacing: 2px;
+}
+
+/* ── PLAY OVERLAY ── */
+#play-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(7,7,26,.85);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: opacity .5s;
+}
+#play-overlay.hidden { opacity: 0; pointer-events: none; }
+
+.play-btn {
+  width: 90px; height: 90px;
+  border-radius: 50%;
+  border: 3px solid var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 24px;
+  animation: playPulse 2s ease-in-out infinite;
+  transition: transform .3s;
+}
+.play-btn:hover { transform: scale(1.1); }
+.play-btn svg { fill: var(--gold); margin-right: -4px; }
+@keyframes playPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(212,175,55,.4); }
+  50% { box-shadow: 0 0 0 20px rgba(212,175,55,0); }
+}
+.play-label {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,.7);
+  letter-spacing: 3px;
+}
+
+/* ── SCENE CONTROLS ── */
+#controls {
+  position: absolute;
+  bottom: 16px;
+  right: 24px;
+  display: flex;
+  gap: 12px;
+  z-index: 100;
+}
+#controls button {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.15);
+  color: #fff;
+  padding: 7px 18px;
+  border-radius: 50px;
+  font-family: 'Cairo', sans-serif;
+  font-size: .8rem;
+  cursor: pointer;
+  transition: all .3s;
+}
+#controls button:hover { background: rgba(212,175,55,.15); border-color: var(--gold); }
+
+/* ══════════════════════════════════════
+   SCENE 1 — INTRO / BRAND REVEAL
+══════════════════════════════════════ */
+#s1 .logo-wrap {
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+#s1 .logo-top {
+  font-size: 1rem;
+  letter-spacing: 8px;
+  color: rgba(255,255,255,.4);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  animation: fadeUp 1s .3s both;
+}
+#s1 .logo-main {
+  font-size: 6rem;
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(135deg, #fff 0%, var(--gold) 40%, var(--blue) 80%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fadeUp 1s .5s both, shimmer 3s 1.5s linear infinite;
+  background-size: 200% auto;
+}
+@keyframes shimmer {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+#s1 .logo-sub {
+  font-size: 1.3rem;
+  font-weight: 300;
+  color: rgba(255,255,255,.5);
+  letter-spacing: 4px;
+  margin-top: 12px;
+  animation: fadeUp 1s .7s both;
+}
+#s1 .logo-line {
+  width: 180px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 28px auto;
+  animation: lineExpand 1s 1s both;
+}
+@keyframes lineExpand {
+  from { width: 0; opacity: 0; }
+  to   { width: 180px; opacity: 1; }
+}
+#s1 .tagline {
+  font-size: 1.05rem;
+  color: var(--gold);
+  letter-spacing: 2px;
+  animation: fadeUp 1s 1.2s both;
+}
+#s1 .circle-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(212,175,55,.12);
+  animation: ringExpand linear infinite;
+}
+@keyframes ringExpand {
+  0%   { transform: translate(-50%,-50%) scale(.3); opacity: .7; }
+  100% { transform: translate(-50%,-50%) scale(2.5); opacity: 0; }
+}
+
+/* ══════════════════════════════════════
+   SCENE 2 — PROBLEM / HOOK
+══════════════════════════════════════ */
+#s2 .hook-wrap {
+  text-align: center;
+  z-index: 2;
+  position: relative;
+  max-width: 900px;
+  padding: 0 40px;
+}
+#s2 .q-icon {
+  font-size: 4rem;
+  margin-bottom: 24px;
+  animation: bounceIn 1s both;
+  display: block;
+}
+@keyframes bounceIn {
+  0%   { transform: scale(0); opacity: 0; }
+  60%  { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+#s2 .q-text {
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.4;
+  animation: fadeUp 1s .3s both;
+  margin-bottom: 20px;
+}
+#s2 .q-text span { color: var(--gold); }
+#s2 .q-sub {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,.5);
+  animation: fadeUp 1s .6s both;
+  margin-bottom: 36px;
+}
+#s2 .pain-points {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeUp 1s .9s both;
+}
+#s2 .pain {
+  background: rgba(224,85,85,.1);
+  border: 1px solid rgba(224,85,85,.25);
+  border-radius: 50px;
+  padding: 10px 22px;
+  font-size: .95rem;
+  color: #e05555;
+}
+
+/* ══════════════════════════════════════
+   SCENE 3 — SOLUTION / WHO ARE WE
+══════════════════════════════════════ */
+#s3 .sol-wrap {
+  text-align: center;
+  z-index: 2;
+  position: relative;
+  max-width: 880px;
+  padding: 0 40px;
+}
+#s3 .sol-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(212,175,55,.1);
+  border: 1px solid rgba(212,175,55,.3);
+  border-radius: 50px;
+  padding: 8px 20px;
+  font-size: .9rem;
+  color: var(--gold);
+  margin-bottom: 28px;
+  animation: fadeUp 1s .2s both;
+}
+.dot-pulse {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: blink 1.5s infinite;
+}
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .2; } }
+#s3 .sol-title {
+  font-size: 3.2rem;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.25;
+  animation: fadeUp 1s .4s both;
+  margin-bottom: 16px;
+}
+#s3 .sol-title .g { background: linear-gradient(135deg, var(--gold), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+#s3 .sol-desc {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,.55);
+  animation: fadeUp 1s .6s both;
+  margin-bottom: 40px;
+  line-height: 1.8;
+}
+#s3 .stats-row {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  animation: fadeUp 1s .8s both;
+}
+#s3 .stat {
+  text-align: center;
+}
+#s3 .stat-num {
+  font-size: 2.8rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--gold), var(--blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+#s3 .stat-label {
+  font-size: .88rem;
+  color: rgba(255,255,255,.45);
+  margin-top: 6px;
+}
+
+/* ══════════════════════════════════════
+   SCENE 4 — FEATURES (مميزات)
+══════════════════════════════════════ */
+#s4 .feat-wrap {
+  z-index: 2;
+  position: relative;
+  text-align: center;
+  width: 100%;
+  padding: 0 60px;
+}
+#s4 .feat-title {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 40px;
+  animation: fadeUp 1s both;
+}
+#s4 .feat-title span { color: var(--gold); }
+#s4 .feat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+#s4 .feat-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  padding: 24px 20px;
+  text-align: center;
+  transition: all .4s;
+  opacity: 0;
+  transform: translateY(30px);
+}
+#s4 .feat-card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+#s4 .feat-card:hover {
+  border-color: rgba(212,175,55,.3);
+  background: rgba(212,175,55,.05);
+  transform: translateY(-6px);
+}
+#s4 .feat-icon { font-size: 2.2rem; margin-bottom: 12px; display: block; }
+#s4 .feat-name { font-size: .98rem; font-weight: 700; color: #fff; margin-bottom: 6px; }
+#s4 .feat-desc { font-size: .78rem; color: rgba(255,255,255,.45); line-height: 1.6; }
+
+/* ══════════════════════════════════════
+   SCENE 5 — PRICING
+══════════════════════════════════════ */
+#s5 .price-wrap {
+  z-index: 2;
+  position: relative;
+  text-align: center;
+  width: 100%;
+  padding: 0 40px;
+}
+#s5 .price-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 10px;
+  animation: fadeUp 1s both;
+}
+#s5 .price-title span { color: var(--gold); }
+#s5 .price-sub {
+  font-size: 1rem;
+  color: rgba(255,255,255,.45);
+  margin-bottom: 36px;
+  animation: fadeUp 1s .2s both;
+}
+#s5 .cards-row {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+#s5 .p-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  padding: 24px 18px;
+  flex: 1;
+  max-width: 210px;
+  text-align: center;
+  opacity: 0;
+  transform: scale(.9);
+  transition: all .5s;
+}
+#s5 .p-card.show { opacity: 1; transform: scale(1); }
+#s5 .p-card.star { border-color: rgba(212,175,55,.4); background: rgba(212,175,55,.06); }
+#s5 .p-name { font-size: .9rem; font-weight: 700; color: rgba(255,255,255,.7); margin-bottom: 10px; }
+#s5 .p-old { font-size: .8rem; color: #e05555; text-decoration: line-through; }
+#s5 .p-new { font-size: 2rem; font-weight: 900; color: var(--gold); line-height: 1.1; }
+#s5 .p-custom { font-size: 1rem; font-weight: 700; color: var(--blue); }
+#s5 .p-badge {
+  display: inline-block;
+  font-size: .68rem;
+  padding: 3px 10px;
+  border-radius: 50px;
+  margin-bottom: 10px;
+  background: rgba(212,175,55,.15);
+  color: var(--gold);
+  border: 1px solid rgba(212,175,55,.3);
+}
+#s5 .p-desc { font-size: .73rem; color: rgba(255,255,255,.4); margin-top: 10px; line-height: 1.55; }
+
+/* ══════════════════════════════════════
+   SCENE 6 — SOCIAL PROOF / REVIEWS
+══════════════════════════════════════ */
+#s6 .rev-wrap {
+  z-index: 2;
+  position: relative;
+  text-align: center;
+  width: 100%;
+  padding: 0 40px;
+}
+#s6 .rev-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 10px;
+  animation: fadeUp 1s both;
+}
+#s6 .rev-title span { color: var(--gold); }
+#s6 .rev-sub {
+  font-size: .95rem;
+  color: rgba(255,255,255,.45);
+  margin-bottom: 36px;
+  animation: fadeUp 1s .2s both;
+}
+#s6 .revs-row {
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+}
+#s6 .rev-card {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  padding: 24px 20px;
+  max-width: 300px;
+  text-align: right;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all .5s;
+}
+#s6 .rev-card.show { opacity: 1; transform: translateY(0); }
+#s6 .rev-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+#s6 .rev-av {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: .95rem;
+  color: #fff;
+  flex-shrink: 0;
+  border: 2px solid rgba(212,175,55,.3);
+}
+#s6 .rev-name { font-weight: 700; font-size: .9rem; color: #fff; }
+#s6 .rev-stars { color: #f0b429; font-size: .8rem; }
+#s6 .rev-text { font-size: .82rem; color: rgba(255,255,255,.55); line-height: 1.7; }
+
+/* ══════════════════════════════════════
+   SCENE 7 — CTA / OUTRO
+══════════════════════════════════════ */
+#s7 .cta-wrap {
+  z-index: 2;
+  position: relative;
+  text-align: center;
+  max-width: 800px;
+  padding: 0 40px;
+}
+#s7 .cta-icon {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 20px;
+  animation: bounceIn 1s both;
+}
+#s7 .cta-title {
+  font-size: 3rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #fff, var(--gold), var(--blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.3;
+  animation: fadeUp 1s .3s both;
+  margin-bottom: 16px;
+}
+#s7 .cta-sub {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,.5);
+  animation: fadeUp 1s .5s both;
+  margin-bottom: 36px;
+}
+#s7 .cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, var(--gold), #b8941f);
+  color: #07071a;
+  font-family: 'Cairo', sans-serif;
+  font-weight: 900;
+  font-size: 1.2rem;
+  padding: 18px 48px;
+  border-radius: 50px;
+  text-decoration: none;
+  animation: fadeUp 1s .7s both, ctaPulse 2.5s 2s infinite;
+  box-shadow: 0 0 0 0 rgba(212,175,55,.5);
+  transition: transform .3s;
+}
+@keyframes ctaPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(212,175,55,.4); }
+  50%      { box-shadow: 0 0 0 16px rgba(212,175,55,0); }
+}
+#s7 .cta-btn:hover { transform: scale(1.05); }
+#s7 .contact-row {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-top: 28px;
+  animation: fadeUp 1s .9s both;
+}
+#s7 .contact-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .9rem;
+  color: rgba(255,255,255,.5);
+}
+#s7 .contact-item span { color: var(--gold); }
+#s7 .logo-outro {
+  position: absolute;
+  bottom: 32px;
+  right: 50%;
+  transform: translateX(50%);
+  font-size: 1.5rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--gold), var(--blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: fadeUp 1s 1.1s both;
+  letter-spacing: 1px;
+}
+
+/* ── Shared Anim ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<div id="stage">
+
+  <!-- PROGRESS BAR -->
+  <div id="progress-bar"></div>
+
+  <!-- TIMER -->
+  <div id="timer">0:00 / 3:00</div>
+
+  <!-- PLAY OVERLAY -->
+  <div id="play-overlay">
+    <div class="play-btn">
+      <svg width="36" height="36" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </div>
+    <div class="play-label">اضغط للتشغيل</div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div id="controls">
+    <button id="btn-prev">◀ السابق</button>
+    <button id="btn-pause">⏸ إيقاف</button>
+    <button id="btn-next">التالي ▶</button>
+  </div>
+
+  <!-- ══ SCENE 1: BRAND INTRO ══ -->
+  <div class="scene active" id="s1">
+    <div class="grid-bg"></div>
+    <div class="glow-1"></div>
+    <div class="glow-2"></div>
+    <div class="glow-3"></div>
+    <div class="particles-container" id="p1"></div>
+
+    <!-- decorative rings -->
+    <div class="circle-ring" style="width:500px;height:500px;top:50%;left:50%;margin-top:-250px;margin-left:-250px;animation:ringExpand 4s .5s infinite;"></div>
+    <div class="circle-ring" style="width:700px;height:700px;top:50%;left:50%;margin-top:-350px;margin-left:-350px;animation:ringExpand 4s 1.5s infinite;"></div>
+    <div class="circle-ring" style="width:900px;height:900px;top:50%;left:50%;margin-top:-450px;margin-left:-450px;animation:ringExpand 4s 2.5s infinite;"></div>
+
+    <div class="logo-wrap">
+      <div class="logo-top">تصميم مواقع احترافي</div>
+      <div class="logo-main">Boula</div>
+      <div class="logo-sub">Web Design</div>
+      <div class="logo-line"></div>
+      <div class="tagline">✦ نصمم حضورك الرقمي بإتقان ✦</div>
+    </div>
+  </div>
+
+  <!-- ══ SCENE 2: HOOK ══ -->
+  <div class="scene" id="s2">
+    <div class="grid-bg"></div>
+    <div class="glow-1" style="background:radial-gradient(circle,rgba(224,85,85,.15) 0%,transparent 70%);"></div>
+    <div class="glow-2"></div>
+    <div class="particles-container" id="p2"></div>
+
+    <div class="hook-wrap">
+      <span class="q-icon">🤔</span>
+      <div class="q-text">عايز موقع إلكتروني <span>احترافي</span><br>بسعر معقول في مصر؟</div>
+      <div class="q-sub">كتير بيدفعوا أكتر مما المفروض... وبيحصلوا على أقل مما استحقوا</div>
+      <div class="pain-points">
+        <div class="pain">💸 أسعار مبالغ فيها</div>
+        <div class="pain">⏳ تأخير في التسليم</div>
+        <div class="pain">😞 جودة منخفضة</div>
+        <div class="pain">📵 دعم ضعيف</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCENE 3: WHO WE ARE ══ -->
+  <div class="scene" id="s3">
+    <div class="grid-bg"></div>
+    <div class="glow-1"></div>
+    <div class="glow-2"></div>
+    <div class="particles-container" id="p3"></div>
+
+    <div class="sol-wrap">
+      <div class="sol-badge"><div class="dot-pulse"></div> الحل اللي بتدور عليه</div>
+      <div class="sol-title"><span class="g">Boula Web Design</span><br>أرخص سعر · أعلى جودة · في مصر</div>
+      <div class="sol-desc">بنصمم مواقع إلكترونية احترافية 100% مخصصة لك<br>بأسعار تبدأ من 100 جنيه فقط — وتسليم سريع في وقت قياسي</div>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-num" data-target="50">0</div><div class="stat-label">+ عميل راضي</div></div>
+        <div class="stat"><div class="stat-num">100%</div><div class="stat-label">رضا مضمون</div></div>
+        <div class="stat"><div class="stat-num">24</div><div class="stat-label">ساعة دعم مستمر</div></div>
+        <div class="stat"><div class="stat-num" data-target="3">0</div><div class="stat-label">أيام تسليم</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCENE 4: FEATURES ══ -->
+  <div class="scene" id="s4">
+    <div class="grid-bg"></div>
+    <div class="glow-1"></div>
+    <div class="glow-2"></div>
+    <div class="particles-container" id="p4"></div>
+
+    <div class="feat-wrap">
+      <div class="feat-title">كل اللي <span>تحتاجه</span> في موقع واحد</div>
+      <div class="feat-grid" id="feat-grid">
+        <div class="feat-card" data-delay="0">
+          <span class="feat-icon">📱</span>
+          <div class="feat-name">متجاوب مع الموبايل</div>
+          <div class="feat-desc">الموقع شغال مثالي على كل الأجهزة بدون أي مشاكل</div>
+        </div>
+        <div class="feat-card" data-delay="100">
+          <span class="feat-icon">⚡</span>
+          <div class="feat-name">سرعة تحميل عالية</div>
+          <div class="feat-desc">تجربة مستخدم سريعة وسلسة تزيد من ثقة زوار موقعك</div>
+        </div>
+        <div class="feat-card" data-delay="200">
+          <span class="feat-icon">🎨</span>
+          <div class="feat-name">تصميم مخصص 100%</div>
+          <div class="feat-desc">مش قوالب جاهزة — كل موقع مصمم خصيصاً لك</div>
+        </div>
+        <div class="feat-card" data-delay="300">
+          <span class="feat-icon">🔒</span>
+          <div class="feat-name">حماية وأمان كامل</div>
+          <div class="feat-desc">شهادة SSL مجانية وحماية كاملة لبياناتك وبيانات عملاؤك</div>
+        </div>
+        <div class="feat-card" data-delay="400">
+          <span class="feat-icon">📊</span>
+          <div class="feat-name">لوحة تحكم سهلة</div>
+          <div class="feat-desc">تقدر تعدّل على موقعك بنفسك بدون أي خبرة تقنية</div>
+        </div>
+        <div class="feat-card" data-delay="500">
+          <span class="feat-icon">🔍</span>
+          <div class="feat-name">تهيئة SEO كاملة</div>
+          <div class="feat-desc">موقعك يظهر في Google ويجذب عملاء جدد باستمرار</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCENE 5: PRICING ══ -->
+  <div class="scene" id="s5">
+    <div class="grid-bg"></div>
+    <div class="glow-1" style="background:radial-gradient(circle,rgba(212,175,55,.15) 0%,transparent 70%);"></div>
+    <div class="glow-2"></div>
+    <div class="particles-container" id="p5"></div>
+
+    <div class="price-wrap">
+      <div class="price-title">أسعار لا <span>تصدقها</span> 💰</div>
+      <div class="price-sub">أرخص أسعار تصميم مواقع احترافية في مصر — بجودة لا تضاهى</div>
+      <div class="cards-row" id="price-cards">
+        <div class="p-card" data-delay="0">
+          <div class="p-badge">🌟 بداية</div>
+          <div class="p-name">صفحة هبوط</div>
+          <div class="p-old">200ج</div>
+          <div class="p-new">100ج</div>
+          <div class="p-desc">صفحة واحدة احترافية كاملة</div>
+        </div>
+        <div class="p-card star" data-delay="100">
+          <div class="p-badge">🔥 الأكثر طلباً</div>
+          <div class="p-name">موقع شخصي</div>
+          <div class="p-old">400ج</div>
+          <div class="p-new">250ج</div>
+          <div class="p-desc">3 صفحات + واتساب + سوشيال</div>
+        </div>
+        <div class="p-card" data-delay="200">
+          <div class="p-badge">💼 مشروع</div>
+          <div class="p-name">موقع مشروع</div>
+          <div class="p-old">500ج</div>
+          <div class="p-new">350ج</div>
+          <div class="p-desc">5 صفحات + نماذج + بريد</div>
+        </div>
+        <div class="p-card star" data-delay="300">
+          <div class="p-badge">⭐ الأفضل قيمة</div>
+          <div class="p-name">مشروع مميز</div>
+          <div class="p-old">600ج</div>
+          <div class="p-new">500ج</div>
+          <div class="p-desc">صفحات غير محدودة + لوحة تحكم</div>
+        </div>
+        <div class="p-card" data-delay="400" style="border-color:rgba(0,198,255,.3);background:rgba(0,198,255,.04);">
+          <div class="p-badge" style="background:rgba(0,198,255,.12);color:var(--blue);border-color:rgba(0,198,255,.3);">✨ مخصص</div>
+          <div class="p-name">Custom</div>
+          <div class="p-custom">200ج — 600ج</div>
+          <div class="p-desc">مصمم 100% حسب رغبتك</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCENE 6: REVIEWS ══ -->
+  <div class="scene" id="s6">
+    <div class="grid-bg"></div>
+    <div class="glow-1"></div>
+    <div class="glow-2" style="background:radial-gradient(circle,rgba(0,198,255,.15) 0%,transparent 70%);"></div>
+    <div class="particles-container" id="p6"></div>
+
+    <div class="rev-wrap">
+      <div class="rev-title">عملاؤنا <span>يتكلموا</span> عنّا 🌟</div>
+      <div class="rev-sub">آراء حقيقية من عملاء وثقوا بينا وحققوا نتائج مذهلة</div>
+      <div class="revs-row" id="revs-row">
+        <div class="rev-card" data-delay="0">
+          <div class="rev-header">
+            <div class="rev-av" style="background:linear-gradient(135deg,#1a6dff,#00c6ff);">أح</div>
+            <div><div class="rev-name">أحمد محمد</div><div class="rev-stars">★★★★★</div></div>
+          </div>
+          <div class="rev-text">تجربة رائعة! الموقع جاء احترافي جداً في وقت قياسي. سعر ممتاز مقارنة بالجودة. أنصح الجميع 💯</div>
+        </div>
+        <div class="rev-card" data-delay="150">
+          <div class="rev-header">
+            <div class="rev-av" style="background:linear-gradient(135deg,#11998e,#38ef7d);">عم</div>
+            <div><div class="rev-name">عمر يوسف</div><div class="rev-stars">★★★★★</div></div>
+          </div>
+          <div class="rev-text">أنصح كل أصحاب المشاريع يتواصلوا مع بولا. سعر معقول جداً وجودة عالية. هعمل موقع تاني قريباً!</div>
+        </div>
+        <div class="rev-card" data-delay="300">
+          <div class="rev-header">
+            <div class="rev-av" style="background:linear-gradient(135deg,#7b2fff,#00c6ff);">نو</div>
+            <div><div class="rev-name">نور الدين</div><div class="rev-stars">★★★★★</div></div>
+          </div>
+          <div class="rev-text">الموقع غيّر حياتي المهنية! زادت طلباتي 3 أضعاف. استثمار يستحق 100% 🚀</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCENE 7: CTA OUTRO ══ -->
+  <div class="scene" id="s7">
+    <div class="grid-bg"></div>
+    <div class="glow-1"></div>
+    <div class="glow-2"></div>
+    <div class="glow-3"></div>
+    <div class="particles-container" id="p7"></div>
+
+    <div class="circle-ring" style="width:600px;height:600px;top:50%;left:50%;margin-top:-300px;margin-left:-300px;animation:ringExpand 4s .5s infinite;"></div>
+    <div class="circle-ring" style="width:900px;height:900px;top:50%;left:50%;margin-top:-450px;margin-left:-450px;animation:ringExpand 4s 2s infinite;"></div>
+
+    <div class="cta-wrap">
+      <span class="cta-icon">🚀</span>
+      <div class="cta-title">ابدأ مشروعك الرقمي<br>النهارده!</div>
+      <div class="cta-sub">موقع احترافي بأرخص سعر في مصر — تواصل معنا دلوقتي</div>
+      <a href="https://wa.me/201558247219" class="cta-btn" target="_blank">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#07071a"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.119.554 4.107 1.523 5.829L.057 23.5l5.816-1.525A11.943 11.943 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.79 9.79 0 01-5.001-1.372l-.36-.213-3.45.905.92-3.363-.234-.374A9.787 9.787 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182c5.431 0 9.818 4.388 9.818 9.818 0 5.431-4.387 9.818-9.818 9.818z"/></svg>
+        تواصل على واتساب
+      </a>
+      <div class="contact-row">
+        <div class="contact-item"><span>📱</span> 01558247219</div>
+        <div class="contact-item"><span>📸</span> @boulana11</div>
+        <div class="contact-item"><span>🎵</span> @tiktoklive_boula</div>
+      </div>
+    </div>
+    <div class="logo-outro">Boula Web Design ✦</div>
+  </div>
+
+</div><!-- end stage -->
+
+<script>
+// ── PARTICLES ──
+function makeParticles(containerId) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const colors = ['#d4af37','#00c6ff','#7b2fff','rgba(255,255,255,.5)'];
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'p';
+    const size = Math.random() * 4 + 1;
+    p.style.cssText = `
+      width:${size}px;height:${size}px;
+      left:${Math.random()*100}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration:${Math.random()*12+8}s;
+      animation-delay:${Math.random()*8}s;
+    `;
+    el.appendChild(p);
+  }
+}
+['p1','p2','p3','p4','p5','p6','p7'].forEach(makeParticles);
+
+// ── SCENE ENGINE ──
+const SCENES = ['s1','s2','s3','s4','s5','s6','s7'];
+// Duration per scene in seconds
+const SCENE_DURATIONS = [22, 20, 22, 30, 25, 22, 39]; // total = 180s
+const TOTAL = 180;
+
+let currentScene = 0;
+let elapsed = 0;
+let playing = false;
+let ticker = null;
+let sceneTimer = 0;
+
+function showScene(idx) {
+  SCENES.forEach((id, i) => {
+    const el = document.getElementById(id);
+    el.classList.toggle('active', i === idx);
+  });
+  currentScene = idx;
+  sceneTimer = 0;
+
+  // Trigger scene-specific animations
+  if (idx === 3) triggerFeatures();
+  if (idx === 4) triggerPricing();
+  if (idx === 5) triggerReviews();
+}
+
+function triggerFeatures() {
+  const cards = document.querySelectorAll('#feat-grid .feat-card');
+  cards.forEach(c => c.classList.remove('show'));
+  cards.forEach(c => {
+    const delay = parseInt(c.dataset.delay) || 0;
+    setTimeout(() => c.classList.add('show'), delay + 300);
+  });
+}
+function triggerPricing() {
+  const cards = document.querySelectorAll('#price-cards .p-card');
+  cards.forEach(c => c.classList.remove('show'));
+  cards.forEach(c => {
+    const delay = parseInt(c.dataset.delay) || 0;
+    setTimeout(() => c.classList.add('show'), delay + 300);
+  });
+}
+function triggerReviews() {
+  const cards = document.querySelectorAll('#revs-row .rev-card');
+  cards.forEach(c => c.classList.remove('show'));
+  cards.forEach(c => {
+    const delay = parseInt(c.dataset.delay) || 0;
+    setTimeout(() => c.classList.add('show'), delay + 300);
+  });
+}
+
+// Counter animation
+function animateCounter(el, target, duration) {
+  let start = 0;
+  const step = target / (duration / 50);
+  const t = setInterval(() => {
+    start = Math.min(start + step, target);
+    el.textContent = Math.round(start) + (el.dataset.suffix || '+');
+    if (start >= target) clearInterval(t);
+  }, 50);
+}
+
+function startCounters() {
+  document.querySelectorAll('[data-target]').forEach(el => {
+    animateCounter(el, parseInt(el.dataset.target), 1500);
+  });
+}
+
+// ── TICK ──
+function tick() {
+  if (!playing) return;
+  elapsed = Math.min(elapsed + 0.25, TOTAL);
+  sceneTimer += 0.25;
+
+  // Update progress bar
+  document.getElementById('progress-bar').style.width = (elapsed / TOTAL * 100) + '%';
+
+  // Update timer
+  const m = Math.floor(elapsed / 60);
+  const s = Math.floor(elapsed % 60);
+  document.getElementById('timer').textContent = `${m}:${s.toString().padStart(2,'0')} / 3:00`;
+
+  // Auto-advance scenes
+  if (sceneTimer >= SCENE_DURATIONS[currentScene]) {
+    if (currentScene < SCENES.length - 1) {
+      showScene(currentScene + 1);
+      if (currentScene === 2) setTimeout(startCounters, 500); // scene 3 (idx 2)
+    } else {
+      clearInterval(ticker);
+      playing = false;
+      document.getElementById('btn-pause').textContent = '▶ تشغيل';
+    }
+  }
+
+  if (elapsed >= TOTAL) {
+    clearInterval(ticker);
+    playing = false;
+  }
+}
+
+// ── CONTROLS ──
+document.getElementById('play-overlay').addEventListener('click', () => {
+  document.getElementById('play-overlay').classList.add('hidden');
+  playing = true;
+  ticker = setInterval(tick, 250);
+  showScene(0);
+});
+
+document.getElementById('btn-pause').addEventListener('click', () => {
+  playing = !playing;
+  if (playing) {
+    ticker = setInterval(tick, 250);
+    document.getElementById('btn-pause').textContent = '⏸ إيقاف';
+  } else {
+    clearInterval(ticker);
+    document.getElementById('btn-pause').textContent = '▶ تشغيل';
+  }
+});
+
+document.getElementById('btn-next').addEventListener('click', () => {
+  if (currentScene < SCENES.length - 1) {
+    showScene(currentScene + 1);
+    if (currentScene === 2) setTimeout(startCounters, 500);
+    // Update elapsed to match
+    let accum = 0;
+    for (let i = 0; i < currentScene; i++) accum += SCENE_DURATIONS[i];
+    elapsed = accum;
+  }
+});
+
+document.getElementById('btn-prev').addEventListener('click', () => {
+  if (currentScene > 0) {
+    showScene(currentScene - 1);
+    let accum = 0;
+    for (let i = 0; i < currentScene; i++) accum += SCENE_DURATIONS[i];
+    elapsed = accum;
+  }
+});
+</script>
+</body>
+</html>
